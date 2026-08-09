@@ -9,12 +9,20 @@ const fastifyEnv = require("@fastify/env");
 // Register plugins
 fastify.register(require("@fastify/cors"));
 fastify.register(require("@fastify/sensible"));
+fastify.register(require("@fastify/multipart"));
+fastify.register(
+  require("@fastify/static", {
+    root: path.join(__dirname, "uploads"),
+    prefix: "/uploads",
+  }),
+);
 
 //register custom plugin
 fastify.register(require("./plugins/mongodb"));
 fastify.register(require("./plugins/jwt"));
 //register routes
 fastify.register(require("./routes/auth"), { prefix: "/api/auth" });
+fastify.register(require("./routes/thumbnail"), { prefix: "/api/thumbnail" });
 //test database connection
 fastify.get("/test-db", async (request, reply) => {
   try {
